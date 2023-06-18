@@ -29,7 +29,7 @@ function tile2bpp(image) {
 			// Iterate pixels of this 8x8 tile
 			for (let ty = 0; ty < 8; ++ty) {
 				for (let tx = 0; tx < 8; ++tx) {
-					let r = ((image.pixel(8 * ix + tx, 8 * iy + ty) >> 16) & 0xFF) / 85
+					let r = 3 - ((image.pixel(8 * ix + tx, 8 * iy + ty) >> 16) & 0xFF) / 85
 					out[o + 2 * ty + 0] |= (r & 0x01) >> 0 << (7 - tx)
 					out[o + 2 * ty + 1] |= (r & 0x02) >> 1 << (7 - tx)
 				}
@@ -39,8 +39,6 @@ function tile2bpp(image) {
 
 	return out;
 }
-
-let template = 
 
 tiled.registerTilesetFormat('gbdk', {
 	name: 'GBDK Tileset',
@@ -115,7 +113,7 @@ extern const struct TilesInfo ${tiles};
 
 const void __at(255) __bank_${name};
 
-const struct MapInfo map = {
+const struct MapInfo ${name} = {
 	${name}_map,		//map
 	${width},			//width
 	${height},			//height
