@@ -10,13 +10,6 @@ ifeq ($(DEFAULT_SPRITES_SIZE), )
 	DEFAULT_SPRITES_SIZE = SPRITES_8x16
 endif
 
-#--- Figure out Tiled directory
-ifneq ($(wildcard /C/Program\ Files/Tiled/Tiled.exe),)
-	TILED = /C/Program\ Files/Tiled/Tiled.exe
-else
-	TILED = tiled
-endif
-
 ifeq ($(MUSIC_PLAYER), )
 	MUSIC_PLAYER = HUGETRACKER
 endif
@@ -33,6 +26,7 @@ MAKEBIN = makebin
 IHXCHECK = ihxcheck
 PNG2ASSET = png2asset
 BANKPACK = bankpack
+TILED = tiled
 
 MOD2GBT = $(ZGB_PATH_UNIX)/../env/mod2gbt
 UGE2SOURCE = $(ZGB_PATH_UNIX)/../env/uge2source
@@ -169,7 +163,7 @@ $(OBJDIR_RES)/sprites/%.png.c: ../res/sprites/%.png $$(wildcard ../res/sprites/%
 $(OBJDIR_RES)/%.tmx.c: ../res/rooms/%.tmx
 	@$(TILED) --export-map gbdk "$(abspath $<)" "$(abspath $@)"
 
-$(OBJDIR_RES)/%.tsx.c: ../res/tilesets/%.tsx
+$(OBJDIR_RES)/%.tsx.c: ../res/tilesets/%.tsx ../res/tilesets/%.png
 	@$(TILED) --export-tileset gbdk "$(abspath $<)" "$(abspath $@)"
 
 $(OBJDIR_RES)/borders/%.png.c: ../res/borders/%.png $(OBJDIR_RES)/borders
