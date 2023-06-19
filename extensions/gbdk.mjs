@@ -70,11 +70,16 @@ const unsigned char ${name}_tiles[] = { ${tiles.join(',')} };
 const void __at(255) __bank_${name};
 
 const struct TilesInfo ${name} = {
-	${length},			// num_tiles
-	${name}_tiles, 		// tiles
-	1,					// num_palettes
-	${name}_palettes,	// palettes
-	${name}CGB			// CGB palette
+	// num_frames
+	${length},
+	// data
+	${name}_tiles,
+	// num_pals
+	1,
+	// pals
+	${name}_palettes,
+	// color_data
+	${name}CGB
 };`)
 	}
 })
@@ -91,6 +96,7 @@ tiled.registerMapFormat('gbdk', {
 		let layer = map.layers.find(layer => layer.isTileLayer)
 		let width = layer.width
 		let height = layer.height
+		let world = { x: 0, y: 0 }
 
 		let cells = []
 		for (let y = 0; y < height; ++y) {
@@ -114,12 +120,22 @@ extern const struct TilesInfo ${tiles};
 const void __at(255) __bank_${name};
 
 const struct MapInfo ${name} = {
-	${name}_map,		//map
-	${width},			//width
-	${height},			//height
-	0,					//attributes
-	BANK(${tiles}),		//tiles bank
-	&${tiles},			//tiles info
+	// data
+	${name}_map,
+	// width
+	${width},
+	// height
+	${height},
+	// world_x,
+	${world.x},
+	// world_y,
+	${world.y},
+	// attributes
+	0,
+	// tiles bank
+	BANK(${tiles}),
+	// tiles info
+	&${tiles},
 };`)
 	}
 })

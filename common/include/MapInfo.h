@@ -7,6 +7,8 @@ struct MapInfo {
 	unsigned char* data;
 	unsigned char width;
 	unsigned char height;
+	unsigned char world_x;
+	unsigned char world_y;
 	unsigned char* attributes;
 
 	unsigned char tiles_bank;
