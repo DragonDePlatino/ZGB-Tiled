@@ -78,6 +78,7 @@ void FadeIn_b() BANKED{
 	} else
 #endif
 		FadeInDMG();
+		DISPLAY_OFF;
 }
 
 void FadeOutDMG() {
@@ -97,6 +98,11 @@ void FadeOut_b() BANKED{
 		FadeOutColor();
 	} else 
 #endif
+
+		BGP_REG = PAL_DEF(0, 1, 2, 3);
+		OBP0_REG = OBP1_REG = PAL_DEF(0, 1, 2, 3);
+
+		DISPLAY_ON;
 		FadeOutDMG();
 }
 
