@@ -181,7 +181,7 @@ $(OBJDIR_RES)/%.mod.c: ../res/music/%.mod
 
 $(INCDIR)/Rooms.h: $$(wildcard ../res/*.world)
 	@echo compiling world
-	$(PYTHON) $(ZGB_PATH_UNIX)/../extensions/w2c.py $< $@ $(@:.h=.c)
+	$(PYTHON) $(ZGB_PATH_UNIX)/../extensions/w2c.py $< $@ $(subst $(INCDIR),$(SRCDIR),$(@:.h=.c)) 
 
 $(OBJDIR_RES)/%.uge.c: ../res/music/%.uge
 	@$(UGE2SOURCE) $< -b 255 $(basename $(basename $(notdir $<)))_uge $@

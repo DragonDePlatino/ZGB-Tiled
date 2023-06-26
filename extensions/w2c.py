@@ -1,5 +1,4 @@
-import sys
-import json
+import os, sys, json
 from textwrap import dedent
 import xml.etree.ElementTree as ET
 
@@ -195,7 +194,7 @@ def createSourceString() -> str:
 	source = dedent(f"""\
 	#include <main.h>
 	#include <types.h>
-	#include "{sys.argv[2] + ".h"}"
+	#include "{os.path.basename(includePath)}"
 	#include "MapInfo.h"
 	\n""")
 
