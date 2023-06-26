@@ -3,16 +3,17 @@ import json
 from textwrap import dedent
 import xml.etree.ElementTree as ET
 
-# Usage: python w2h.py file.world filename.h
-worldFile = sys.argv[1]
-saveFile = sys.argv[2]
+# Usage: python w2h.py input.world output.h output.c
+worldPath = sys.argv[1]
+includePath = sys.argv[2]
+sourcePath = sys.argv[3]
 
 # All the world information
 world = {}
 maps = []
 tileSize = 8
 
-with open(worldFile, "r") as data:
+with open(worldPath, "r") as data:
 	# Parse the JSON
 	world = json.loads(data.read() )
 
@@ -43,7 +44,7 @@ def getRoomInfo() -> str:
 
 	# Iterate through each map file referenced inside the .world file
 	for i, map in enumerate(world["maps"] ):
-		roomData = ET.parse("res/" + world["maps"][i]["fileName"] )
+		roomData = ET.parse("../res/" + world["maps"][i]["fileName"] )
 		root = roomData.getroot()
 
 		# Create empty room information
@@ -209,12 +210,12 @@ def createSourceString() -> str:
 
 def buildExportFile():
 	# Write the .h file
-	headerFile = open("include/" + sys.argv[2] + ".h", "w")
+	headerFile = open(includePath, "w")
 	headerFile.write(createHeaderString() )
 	headerFile.close()
 
 	# Write the .c file
-	sourceFile = open("src/" + sys.argv[2] + ".c", "w")
+	sourceFile = open(sourcePath, "w")
 	sourceFile.write(createSourceString() )
 	sourceFile.close()
 

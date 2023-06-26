@@ -17,6 +17,8 @@ endif
 OBJDIR = ../$(BUILD_TYPE)
 OBJDIR_RES = ../$(BUILD_TYPE)/res
 OBJDIR_ZGB = ../$(BUILD_TYPE)/zgb
+INCDIR = ../include
+SRCDIR = ../src
 BINDIR = ../bin
 
 SDCC = sdcc
@@ -27,6 +29,7 @@ IHXCHECK = ihxcheck
 PNG2ASSET = png2asset
 BANKPACK = bankpack
 TILED = tiled
+PYTHON = python
 
 MOD2GBT = $(ZGB_PATH_UNIX)/../env/mod2gbt
 UGE2SOURCE = $(ZGB_PATH_UNIX)/../env/uge2source
@@ -175,6 +178,10 @@ $(OBJDIR_RES)/%.png.c: ../res/%.png $$(wildcard ../res/%.png.meta)
 $(OBJDIR_RES)/%.mod.c: ../res/music/%.mod
 	@$(MOD2GBT) $< $(basename $(basename $(notdir $<)))_mod 255 > /dev/null
 	@mv output.c $@
+
+$(INCDIR)/Rooms.h: $$(wildcard ../res/*.world)
+	@echo compiling world
+	$(PYTHON) $(ZGB_PATH_UNIX)/../extensions/w2c.py $< $@ $(@:.h=.c)
 
 $(OBJDIR_RES)/%.uge.c: ../res/music/%.uge
 	@$(UGE2SOURCE) $< -b 255 $(basename $(basename $(notdir $<)))_uge $@
