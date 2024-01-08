@@ -89,7 +89,7 @@ __endasm;
 }
 
 void UPDATE_TILE(INT16 x, INT16 y, UINT8* t, UINT8* c) {
-	UINT8 replacement = *t;
+	UINT8 replacement;
 	UINT8 i;
 	Sprite* s = 0;
 	UINT8 type = 255u;
@@ -100,6 +100,7 @@ void UPDATE_TILE(INT16 x, INT16 y, UINT8* t, UINT8* c) {
 	if((UINT16)x >= scroll_tiles_w || (UINT16)y >= scroll_tiles_h) { //This also checks x < 0 || y < 0
 		replacement = 0;
 	} else {
+		replacement = *t;
 		type = GetTileReplacement(t, &replacement);
 		if(type != 255u) {
 			id = SPRITE_UNIQUE_ID(x, y);
@@ -191,16 +192,18 @@ attr;
 		set_win_tile_xy(x, y, data);
 
 #ifdef CGB
-	VBK_REG = 1;
+	if (_cpu == CGB_TYPE) {
+		VBK_REG = 1;
 
-	UINT8 c = attr ? *attr : scroll_tile_info[data];
-	c += offsetts[1];
+		UINT8 c = attr ? *attr : scroll_tile_info[data];
+		c += offsetts[1];
 
-	if(bg_or_win == 0)
-		set_bkg_tile_xy(x, y, c);
-	else
-		set_win_tile_xy(x, y, c);
-	VBK_REG = 0;
+		if (bg_or_win == 0)
+			set_bkg_tile_xy(x, y, c);
+		else
+			set_win_tile_xy(x, y, c);
+		VBK_REG = 0;
+	}
 #endif
 }
 
